@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<item android:state_pressed="true"
+		>
+		<shape>
+			<solid
+				android:color="@color/grayC"
+				/>
+			<stroke
+				android:width="1dp"
+				android:color="@color/black" />
+		</shape>
+	</item> <!-- pressed -->
+	<item
+		android:state_checked="false"
+		>
+		<shape>
+			<solid
+				android:color="@color/gray6"
+				/>
+			<stroke
+				android:width="1dp"
+				android:color="@color/black" />
+		</shape>
+	</item> <!-- pressed -->
+	<item>
+		<shape>
+			<solid
+				android:color="@color/grayA"
+				/>
+			<stroke
+				android:width="1dp"
+				android:color="@color/black" />
+		</shape>
+	</item> <!-- pressed -->
+
+</selector>

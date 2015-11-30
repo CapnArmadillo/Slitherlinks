@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<RadioGroup
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="40dp"
+	android:orientation="horizontal"
+	android:background="@color/gray8"
+	android:layout_alignParentBottom="true"
+	android:padding="5dp"
+	android:checkedButton="@+id/navAltair"
+	tools:showIn="@layout/activity_main">
+
+	<RadioButton
+		android:id="@+id/navAltair"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_weight="1"
+		android:layout_marginLeft="5dp"
+		android:text="@string/altair"
+		android:textSize="13sp"
+		android:textColor="@color/white"
+		/>
+
+	<!--<RadioButton-->
+		<!--android:id="@+id/navHex"-->
+		<!--android:layout_width="match_parent"-->
+		<!--android:layout_height="match_parent"-->
+		<!--android:layout_weight="1"-->
+		<!--android:layout_marginLeft="5dp"-->
+		<!--android:text="@string/hexagon"-->
+		<!--android:textSize="13sp"-->
+		<!--android:textColor="@color/white"-->
+		<!--/>-->
+
+</RadioGroup>
+

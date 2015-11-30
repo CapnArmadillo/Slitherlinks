@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<color name="clear">#0000</color>
+	<color name="red">#F00</color>
+	<color name="green">#0F0</color>
+	<color name="blue">#00F</color>
+
+	<color name="black">#000</color>
+	<color name="gray2">#222</color>
+	<color name="gray4">#444</color>
+	<color name="gray6">#666</color>
+	<color name="gray8">#888</color>
+	<color name="grayA">#AAA</color>
+	<color name="grayC">#CCC</color>
+	<color name="grayE">#EEE</color>
+	<color name="white">#FFF</color>
+
+	<color name="positiveGreen">#008039</color>
+	<color name="positiveFillGreen">#e4ede8</color>
+	<color name="negativeRed">#ae0101</color>
+	<color name="negativeFillRed">#f0e4e4</color>
+
+	<color name="blue1">#001</color>
+	<color name="blue2">#002</color>
+	<color name="blue3">#003</color>
+	<color name="blue4">#004</color>
+	<color name="blue5">#005</color>
+	<color name="blue6">#006</color>
+	<color name="blue7">#007</color>
+	<color name="blue8">#008</color>
+	<color name="blue9">#009</color>
+	<color name="blueA">#00A</color>
+	<color name="blueB">#00B</color>
+	<color name="blueC">#00C</color>
+	<color name="blueD">#00D</color>
+	<color name="blueE">#00E</color>
+	<color name="green1">#010</color>
+	<color name="green2">#020</color>
+	<color name="green3">#030</color>
+	<color name="green4">#040</color>
+	<color name="green5">#050</color>
+	<color name="green6">#060</color>
+	<color name="green7">#070</color>
+	<color name="green8">#080</color>
+	<color name="green9">#090</color>
+	<color name="greenA">#0A0</color>
+	<color name="greenB">#0B0</color>
+	<color name="greenC">#0C0</color>
+	<color name="greenD">#0D0</color>
+	<color name="greenE">#0E0</color>
+	<color name="red1">#100</color>
+	<color name="red2">#200</color>
+	<color name="red3">#300</color>
+	<color name="red4">#400</color>
+	<color name="red5">#500</color>
+	<color name="red6">#600</color>
+	<color name="red7">#700</color>
+	<color name="red8">#800</color>
+	<color name="red9">#900</color>
+	<color name="redA">#A00</color>
+	<color name="redB">#B00</color>
+	<color name="redC">#C00</color>
+	<color name="redD">#D00</color>
+	<color name="redE">#E00</color>
+
+	<color name="editTextOutline">#bababa</color>
+	<color name="editTextSelected">#222</color>
+	<color name="editTextUnselected">#666</color>
+	<color name="editTextFocused">#666</color>
+
+</resources>

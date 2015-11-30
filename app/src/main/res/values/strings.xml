@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Slitherlink Test</string>
+
+	<string name="altair">Altair</string>
+	<string name="hexagon">Hexagon</string>
+
+	<string name="node4path">
+		M 29, 15
+		L 15, 29
+		   1, 15
+		  15,  1
+		z
+	</string>
+	<string name="node5aPath">
+		M  1, 25
+		L 11,  9
+		  31, 15
+		  31, 35
+		  11, 41
+		z
+	</string>
+	<string name="node5bPath">
+		M 25,  1
+		L 41, 11
+		  35, 31
+		  15, 31
+		   9, 11
+		z
+	</string>
+	<string name="node5cPath">
+		M 31, 25
+		L 21, 41
+		   1, 35
+		   1, 15
+		  21,  9
+		z
+	</string>
+	<string name="node5dPath">
+		M 25, 31
+		L  9, 21
+		  15,  1
+		  35,  1
+		  41, 21
+		z
+	</string>
+	<string name="node6aPath">
+          M 35,  7
+          L 41, 27
+            27, 41
+             7, 35
+             1, 15
+            15,  1
+          z
+	</string>
+	<string name="node6bPath">
+          M  7,  7
+          L  1, 27
+            15, 41
+            35, 35
+            41, 15
+            27,  1
+          z
+	</string>
+	<string name="node7aPath">
+          M  7,  7
+          L 27,  1
+            43, 11
+            43, 29
+            29, 43
+            11, 43
+             1, 27
+          z
+	</string>
+	<string name="node7bPath">
+          M 37,  7
+          L 17,  1
+             1, 11
+             1, 29
+            15, 43
+            33, 43
+            43, 27
+          z
+	</string>
+	<string name="node7cPath">
+          M 37, 37
+          L 17, 43
+             1, 33
+             1, 15
+            15,  1
+            33,  1
+            43, 17
+          z
+	</string>
+	<string name="node7dPath">
+          M  7, 37
+          L 27, 43
+            43, 33
+            43, 15
+            29,  1
+            11,  1
+             1, 17
+          z
+	</string>
+	<string name="node8path">
+		M 49, 35
+		L 35, 49
+		  15, 49
+		   1, 35
+		   1, 15
+		  15,  1
+		  35,  1
+		  49, 15
+		z
+	</string>
+
+</resources>
