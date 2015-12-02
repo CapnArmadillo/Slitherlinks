@@ -1,6 +1,8 @@
 package com.armadillo.slitherlink.altair;
 
 import com.armadillo.common.DLog;
+import com.armadillo.slitherlink.common.Edge;
+import com.armadillo.slitherlink.common.SNode;
 
 import java.util.ArrayList;
 import java.io.*;

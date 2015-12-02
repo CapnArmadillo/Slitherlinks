@@ -1,4 +1,4 @@
-package com.armadillo.slitherlink.altair;
+package com.armadillo.slitherlink.hex;
 
 import android.app.Fragment;
 import android.graphics.Bitmap;
@@ -10,15 +10,19 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import com.armadillo.slitherlink.R;
 import com.armadillo.common.DLog;
+import com.armadillo.slitherlink.R;
 import com.armadillo.slitherlink.common.Edge;
 import com.armadillo.slitherlink.common.Position;
 import com.armadillo.slitherlink.common.SNode;
+import com.armadillo.slitherlink.altair.Slitherlink;
+import com.armadillo.slitherlink.altair.SlitherlinkHelper;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,13 +31,15 @@ import java.util.Comparator;
 /**
  * Created by john.pushnik on 11/16/15.
  */
-public class AltairLayoutFragment extends Fragment {
-    private static final String TAG = "AltairLayoutFragment";
+public class HexLayoutFragment extends Fragment {
+    private static final String TAG = "HexLayoutFragment";
 
     private View view;
     private ImageView image;
     private TextView coordinates, nearest;
     private ToggleButton clickMode;
+
+    private RadioButton depth0, depth1, depth2, depth3, depth4;
 
     private Slitherlink slitherlink;
     private ArrayList<SNode> nodes;
@@ -48,7 +54,7 @@ public class AltairLayoutFragment extends Fragment {
     private int xTextOffset = 3;
     private int yTextOffset = 6;
 
-    public AltairLayoutFragment() {
+    public HexLayoutFragment() {
     }
 
     @Override
@@ -61,7 +67,7 @@ public class AltairLayoutFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         DLog.i();
         this.inflater = inflater;
-        view = inflater.inflate(R.layout.fragment_altair, container, false);
+        view = inflater.inflate(R.layout.fragment_hex, container, false);
         view.getViewTreeObserver().addOnGlobalLayoutListener(globalLayoutListener);
 
         image = (ImageView)view.findViewById(R.id.image);
@@ -70,6 +76,18 @@ public class AltairLayoutFragment extends Fragment {
         nearest = (TextView)view.findViewById(R.id.nearest);
 
         clickMode = (ToggleButton)view.findViewById(R.id.clickMode);
+
+        depth0 = (RadioButton)view.findViewById(R.id.depth0);
+        depth1 = (RadioButton)view.findViewById(R.id.depth1);
+        depth2 = (RadioButton)view.findViewById(R.id.depth2);
+        depth3 = (RadioButton)view.findViewById(R.id.depth3);
+        depth4 = (RadioButton)view.findViewById(R.id.depth4);
+
+        setListener(depth0);
+        setListener(depth1);
+        setListener(depth2);
+        setListener(depth3);
+        setListener(depth4);
 
         return view;
     }
@@ -114,50 +132,17 @@ public class AltairLayoutFragment extends Fragment {
 
         try {
             if (slitherlink == null) {
-//                try {
-//                    Position base = new Position(130,130);
-//                    slitherlink = new Slitherlink(Slitherlink.TYPE_ALTAIR);
-//                    int xMax = 5;
-//                    int off = 200;
-//                    int[] clues;
-//                    for (int tsize = 0; tsize < xMax; tsize++){
-//                        for (int ang = 0; ang < 3; ang++){
-//                            slitherlink.index = 0;
-//                            clues = slitherlink.fill2(SlitherlinkHelper.sl2[tsize + ang * xMax]);
-//                            slitherlink.root = new
-//                                    SNode(8,-1,base,off * tsize, off * ang, ang + 1, 2.0f);
-//                            slitherlink.root.setValue(clues[slitherlink.index]);
-//                            slitherlink.root.setHighlight(2);
-//                            slitherlink.root.setId(slitherlink.index++);
-//                            slitherlink.grow(slitherlink.addNode(slitherlink.root),2,clues);
-//                        }
-//                    }
-//                    for (int h = 0; h < Slitherlink.maxSolve; h++){
-//                        slitherlink.solve();
-//                    }
-//                } catch (Exception e) {
-//                }
+//                slitherlink = new Slitherlink(Slitherlink.TYPE_HEXAGON, 2, SlitherlinkHelper.sl31, 1.5f);
+//                slitherlink = new Slitherlink(Slitherlink.TYPE_HEXAGON, 1, 2.0f);
+                slitherlink = new Slitherlink(Slitherlink.TYPE_HEXAGON, 1, 1.5f);
+//                slitherlink = new Slitherlink(Slitherlink.TYPE_HEXAGON, 2, 2.0f);
+//                slitherlink = new Slitherlink(Slitherlink.TYPE_HEXAGON, 2, 1.5f);
+//                slitherlink = new Slitherlink(Slitherlink.TYPE_HEXAGON, 3, 1.5f);
+//                slitherlink = new Slitherlink(Slitherlink.TYPE_HEXAGON, 4, 1.5f);
 
-                slitherlink = new Slitherlink(Slitherlink.TYPE_ALTAIR, 3, SlitherlinkHelper.sl31, 1.5f);
-//                slitherlink = new Slitherlink(Slitherlink.TYPE_ALTAIR, 2, SlitherlinkHelper.sl20, 2.0f);
-//                slitherlink = new Slitherlink(Slitherlink.TYPE_ALTAIR, 2, SlitherlinkHelper.sl21, 2.0f);
-//                slitherlink = new Slitherlink(Slitherlink.TYPE_ALTAIR, 2, SlitherlinkHelper.sl22, 2.0f);
-//                slitherlink = new Slitherlink(Slitherlink.TYPE_ALTAIR, 2, SlitherlinkHelper.sl23, 2.0f);
-//                slitherlink = new Slitherlink(Slitherlink.TYPE_ALTAIR, 2, SlitherlinkHelper.sl24, 2.0f);
-//                slitherlink = new Slitherlink(Slitherlink.TYPE_ALTAIR, 2, SlitherlinkHelper.sl25, 2.0f);
-//                slitherlink = new Slitherlink(Slitherlink.TYPE_ALTAIR, 2, SlitherlinkHelper.sl26, 2.0f);
-//                slitherlink = new Slitherlink(Slitherlink.TYPE_ALTAIR, 2, SlitherlinkHelper.sl27, 2.0f);
-//                slitherlink = new Slitherlink(Slitherlink.TYPE_ALTAIR, 2, SlitherlinkHelper.sl28, 2.0f);
-//                slitherlink = new Slitherlink(Slitherlink.TYPE_ALTAIR, 2, SlitherlinkHelper.sl29, 2.0f);
-//                slitherlink = new Slitherlink(Slitherlink.TYPE_ALTAIR, 6, SlitherlinkHelper.sl71, 1.0f);
-//                slitherlink = new Slitherlink(Slitherlink.TYPE_ALTAIR, 6, SlitherlinkHelper.sl72, 1.0f);
-//                slitherlink = new Slitherlink(Slitherlink.TYPE_ALTAIR, 6, SlitherlinkHelper.sl73, 1.0f);
-//                slitherlink = new Slitherlink(Slitherlink.TYPE_ALTAIR, 6, SlitherlinkHelper.sl74, 1.0f);
                 nodes = slitherlink.getNodes();
                 edges = slitherlink.getEdges();
             }
-//            fillNodes();
-//            board.requestLayout();
         } catch (Exception e) {
 
         }
@@ -220,7 +205,32 @@ public class AltairLayoutFragment extends Fragment {
             Position pos = node.getPosition();
             canvas.drawText("" + node.getValue(), pos.getX() - xTextOffset, pos.getY() + yTextOffset, paint);
 //            canvas.drawText("" + node.getId() + "," + node.getValue(), pos.getX() - xTextOffset, pos.getY() + yTextOffset, paint);
+//            canvas.drawText("" + node.getId(), pos.getX() - xTextOffset, pos.getY() + yTextOffset, paint);
         }
+    }
+
+    public void setListener(CompoundButton button) {
+        button.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    String text = buttonView.getText().toString();
+                    if (text != null) {
+                        int depth = Integer.parseInt(text);
+                        slitherlink = new Slitherlink(Slitherlink.TYPE_HEXAGON, depth, 1.5f);
+
+                        nodes = slitherlink.getNodes();
+                        edges = slitherlink.getEdges();
+
+                        if (treeLoaded && canvas != null) {
+                            canvas.drawColor(getResources().getColor(R.color.white));
+                            fillNodes();
+                            fillEdges();
+                        }
+                    }
+                }
+            }
+        });
     }
 
     public void setOnTouchListenerForView(View view) {

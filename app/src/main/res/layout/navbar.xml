@@ -14,7 +14,7 @@
 	tools:showIn="@layout/activity_main">
 
 	<RadioButton
-		android:id="@+id/navAltair"
+		android:id="@id/navAltair"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:layout_weight="1"
@@ -24,16 +24,16 @@
 		android:textColor="@color/white"
 		/>
 
-	<!--<RadioButton-->
-		<!--android:id="@+id/navHex"-->
-		<!--android:layout_width="match_parent"-->
-		<!--android:layout_height="match_parent"-->
-		<!--android:layout_weight="1"-->
-		<!--android:layout_marginLeft="5dp"-->
-		<!--android:text="@string/hexagon"-->
-		<!--android:textSize="13sp"-->
-		<!--android:textColor="@color/white"-->
-		<!--/>-->
+	<RadioButton
+		android:id="@+id/navHex"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_weight="1"
+		android:layout_marginLeft="5dp"
+		android:text="@string/hexagon"
+		android:textSize="13sp"
+		android:textColor="@color/white"
+		/>
 
 </RadioGroup>
 
