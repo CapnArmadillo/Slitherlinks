@@ -16,6 +16,9 @@ import android.widget.ToggleButton;
 
 import com.armadillo.slitherlink.R;
 import com.armadillo.common.DLog;
+import com.armadillo.slitherlink.common.Edge;
+import com.armadillo.slitherlink.common.Position;
+import com.armadillo.slitherlink.common.SNode;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -113,7 +116,7 @@ public class AltairLayoutFragment extends Fragment {
             if (slitherlink == null) {
 //                try {
 //                    Position base = new Position(130,130);
-//                    slitherlink = new Slitherlink();
+//                    slitherlink = new Slitherlink("Altair");
 //                    int xMax = 5;
 //                    int off = 200;
 //                    int[] clues;
@@ -135,21 +138,21 @@ public class AltairLayoutFragment extends Fragment {
 //                } catch (Exception e) {
 //                }
 
-                slitherlink = new Slitherlink(3, SlitherlinkHelper.sl31, 1.5f);
-//                slitherlink = new Slitherlink(2, SlitherlinkHelper.sl20, 2.0f);
-//                slitherlink = new Slitherlink(2, SlitherlinkHelper.sl21, 2.0f);
-//                slitherlink = new Slitherlink(2, SlitherlinkHelper.sl22, 2.0f);
-//                slitherlink = new Slitherlink(2, SlitherlinkHelper.sl23, 2.0f);
-//                slitherlink = new Slitherlink(2, SlitherlinkHelper.sl24, 2.0f);
-//                slitherlink = new Slitherlink(2, SlitherlinkHelper.sl25, 2.0f);
-//                slitherlink = new Slitherlink(2, SlitherlinkHelper.sl26, 2.0f);
-//                slitherlink = new Slitherlink(2, SlitherlinkHelper.sl27, 2.0f);
-//                slitherlink = new Slitherlink(2, SlitherlinkHelper.sl28, 2.0f);
-//                slitherlink = new Slitherlink(2, SlitherlinkHelper.sl29, 2.0f);
-//                slitherlink = new Slitherlink(6, SlitherlinkHelper.sl71, 1.0f);
-//                slitherlink = new Slitherlink(6, SlitherlinkHelper.sl72, 1.0f);
-//                slitherlink = new Slitherlink(6, SlitherlinkHelper.sl73, 1.0f);
-//                slitherlink = new Slitherlink(6, SlitherlinkHelper.sl74, 1.0f);
+                slitherlink = new Slitherlink("Altair", 3, SlitherlinkHelper.sl31, 1.5f);
+//                slitherlink = new Slitherlink("Altair", 2, SlitherlinkHelper.sl20, 2.0f);
+//                slitherlink = new Slitherlink("Altair", 2, SlitherlinkHelper.sl21, 2.0f);
+//                slitherlink = new Slitherlink("Altair", 2, SlitherlinkHelper.sl22, 2.0f);
+//                slitherlink = new Slitherlink("Altair", 2, SlitherlinkHelper.sl23, 2.0f);
+//                slitherlink = new Slitherlink("Altair", 2, SlitherlinkHelper.sl24, 2.0f);
+//                slitherlink = new Slitherlink("Altair", 2, SlitherlinkHelper.sl25, 2.0f);
+//                slitherlink = new Slitherlink("Altair", 2, SlitherlinkHelper.sl26, 2.0f);
+//                slitherlink = new Slitherlink("Altair", 2, SlitherlinkHelper.sl27, 2.0f);
+//                slitherlink = new Slitherlink("Altair", 2, SlitherlinkHelper.sl28, 2.0f);
+//                slitherlink = new Slitherlink("Altair", 2, SlitherlinkHelper.sl29, 2.0f);
+//                slitherlink = new Slitherlink("Altair", 6, SlitherlinkHelper.sl71, 1.0f);
+//                slitherlink = new Slitherlink("Altair", 6, SlitherlinkHelper.sl72, 1.0f);
+//                slitherlink = new Slitherlink("Altair", 6, SlitherlinkHelper.sl73, 1.0f);
+//                slitherlink = new Slitherlink("Altair", 6, SlitherlinkHelper.sl74, 1.0f);
                 nodes = slitherlink.getNodes();
                 edges = slitherlink.getEdges();
             }

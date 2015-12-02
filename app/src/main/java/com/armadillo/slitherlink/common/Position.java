@@ -1,4 +1,4 @@
-package com.armadillo.slitherlink.altair;
+package com.armadillo.slitherlink.common;
 
 /**
  * Class Position is used to determine the coordinates of an object
@@ -11,8 +11,8 @@ package com.armadillo.slitherlink.altair;
 public class Position
 {
 	// instance variables - replace the example below with your own
-	protected int x;
-	protected int y;
+	private int x;
+	private int y;
 
    /**
     * Creates a new Position object with no parameters.

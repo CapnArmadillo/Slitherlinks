@@ -64,8 +64,8 @@ public class MainActivity extends Activity {
 				String text = ((Button)view).getText().toString();
 				if (text.equalsIgnoreCase(getString(R.string.altair))) {
 					attachAltairLayoutFragment();
-//				} else if (text.equalsIgnoreCase(getString(R.string.altair))) {
-//					attachAltairLayoutFragment();
+				} else if (text.equalsIgnoreCase(getString(R.string.hexagon))) {
+					attachHexLayoutFragment();
 				}
 			}
 		};

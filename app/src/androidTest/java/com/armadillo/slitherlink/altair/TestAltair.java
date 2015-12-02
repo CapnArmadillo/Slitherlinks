@@ -2,6 +2,9 @@ package com.armadillo.slitherlink.altair;
 
 import android.test.ActivityTestCase;
 
+import com.armadillo.slitherlink.common.Position;
+import com.armadillo.slitherlink.common.SNode;
+
 /**
  * Created by john.pushnik on 11/16/15.
  */

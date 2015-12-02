@@ -16,9 +16,9 @@ import android.widget.ToggleButton;
 
 import com.armadillo.common.DLog;
 import com.armadillo.slitherlink.R;
-import com.armadillo.slitherlink.altair.Edge;
-import com.armadillo.slitherlink.altair.Position;
-import com.armadillo.slitherlink.altair.SNode;
+import com.armadillo.slitherlink.common.Edge;
+import com.armadillo.slitherlink.common.Position;
+import com.armadillo.slitherlink.common.SNode;
 import com.armadillo.slitherlink.altair.Slitherlink;
 import com.armadillo.slitherlink.altair.SlitherlinkHelper;
 
@@ -116,45 +116,9 @@ public class HexLayoutFragment extends Fragment {
 
         try {
             if (slitherlink == null) {
-//                try {
-//                    Position base = new Position(130,130);
-//                    slitherlink = new Slitherlink();
-//                    int xMax = 5;
-//                    int off = 200;
-//                    int[] clues;
-//                    for (int tsize = 0; tsize < xMax; tsize++){
-//                        for (int ang = 0; ang < 3; ang++){
-//                            slitherlink.index = 0;
-//                            clues = slitherlink.fill2(SlitherlinkHelper.sl2[tsize + ang * xMax]);
-//                            slitherlink.root = new
-//                                    SNode(8,-1,base,off * tsize, off * ang, ang + 1, 2.0f);
-//                            slitherlink.root.setValue(clues[slitherlink.index]);
-//                            slitherlink.root.setHighlight(2);
-//                            slitherlink.root.setId(slitherlink.index++);
-//                            slitherlink.grow(slitherlink.addNode(slitherlink.root),2,clues);
-//                        }
-//                    }
-//                    for (int h = 0; h < Slitherlink.maxSolve; h++){
-//                        slitherlink.solve();
-//                    }
-//                } catch (Exception e) {
-//                }
+//                slitherlink = new Slitherlink("Hexagon", 2, SlitherlinkHelper.sl31, 1.5f);
+                slitherlink = new Slitherlink("Hexagon", 2);
 
-                slitherlink = new Slitherlink(3, SlitherlinkHelper.sl31, 1.5f);
-//                slitherlink = new Slitherlink(2, SlitherlinkHelper.sl20, 2.0f);
-//                slitherlink = new Slitherlink(2, SlitherlinkHelper.sl21, 2.0f);
-//                slitherlink = new Slitherlink(2, SlitherlinkHelper.sl22, 2.0f);
-//                slitherlink = new Slitherlink(2, SlitherlinkHelper.sl23, 2.0f);
-//                slitherlink = new Slitherlink(2, SlitherlinkHelper.sl24, 2.0f);
-//                slitherlink = new Slitherlink(2, SlitherlinkHelper.sl25, 2.0f);
-//                slitherlink = new Slitherlink(2, SlitherlinkHelper.sl26, 2.0f);
-//                slitherlink = new Slitherlink(2, SlitherlinkHelper.sl27, 2.0f);
-//                slitherlink = new Slitherlink(2, SlitherlinkHelper.sl28, 2.0f);
-//                slitherlink = new Slitherlink(2, SlitherlinkHelper.sl29, 2.0f);
-//                slitherlink = new Slitherlink(6, SlitherlinkHelper.sl71, 1.0f);
-//                slitherlink = new Slitherlink(6, SlitherlinkHelper.sl72, 1.0f);
-//                slitherlink = new Slitherlink(6, SlitherlinkHelper.sl73, 1.0f);
-//                slitherlink = new Slitherlink(6, SlitherlinkHelper.sl74, 1.0f);
                 nodes = slitherlink.getNodes();
                 edges = slitherlink.getEdges();
             }
