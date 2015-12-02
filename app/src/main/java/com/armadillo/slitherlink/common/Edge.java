@@ -1,4 +1,4 @@
-package com.armadillo.slitherlink.altair;
+package com.armadillo.slitherlink.common;
 
 import android.graphics.Color;
 
@@ -24,16 +24,19 @@ import java.util.*;
  ****************************************************************************/
 public class Edge 
 {
-    protected Position pos;   // useful place to put a label, the midpoint
-    protected Position pos1;  // first endpoint
-    protected Position pos2;  // second endpoint
-    protected SNode node1 = null;  // connected nodes
-    protected SNode node2 = null;  // connected nodes
-    protected Edge edge11 = null;  // edge connected to pos1 and node1 
-    protected Edge edge12 = null;  // edge connected to pos1 and node2 
-    protected Edge edge21 = null;  // edge connected to pos2 and node1 
-    protected Edge edge22 = null;  // edge connected to pos2 and node2 
-    protected int status = -1, nodeCount, edgeCount, id;
+    private Position pos;   // useful place to put a label, the midpoint
+    private Position pos1;  // first endpoint
+    private Position pos2;  // second endpoint
+    private SNode node1 = null;  // connected nodes
+    private SNode node2 = null;  // connected nodes
+    private Edge edge11 = null;  // edge connected to pos1 and node1
+    private Edge edge12 = null;  // edge connected to pos1 and node2
+    private Edge edge21 = null;  // edge connected to pos2 and node1
+    private Edge edge22 = null;  // edge connected to pos2 and node2
+    private int status = -1;
+    private int nodeCount;
+    private int edgeCount;
+    private int id;
     private int color;
     protected static final int LINE_ON_COLOR = Color.BLUE;
     protected static final int LINE_OFF_COLOR = Color.LTGRAY;
@@ -43,7 +46,7 @@ public class Edge
     protected static final int CLEAR_COLOR = Color.TRANSPARENT;
     protected static final int WHITE_COLOR = Color.WHITE;
 
-    protected Position[] point;
+//    protected Position[] point;
 //    private Polygon poly;
 
    /**
@@ -55,20 +58,20 @@ public class Edge
     {
         pos1 = input1;
         pos2 = input2;
-        pos = new Position((pos1.x + pos2.x)/2,(pos1.y + pos2.y)/2);
+        pos = new Position((pos1.getX() + pos2.getX())/2,(pos1.getY() + pos2.getY())/2);
     }
     public Edge(Position input1, Position input2, SNode node)
     {
         pos1 = input1;
         pos2 = input2;
-        pos = new Position((pos1.x + pos2.x)/2,(pos1.y + pos2.y)/2);
+        pos = new Position((pos1.getX() + pos2.getX())/2,(pos1.getY() + pos2.getY())/2);
         node1 = node;
     }
     public Edge(Position input1, Position input2, SNode nod1, SNode nod2)
     {
         pos1 = input1;
         pos2 = input2;
-        pos = new Position((pos1.x + pos2.x)/2,(pos1.y + pos2.y)/2);
+        pos = new Position((pos1.getX() + pos2.getX())/2,(pos1.getY() + pos2.getY())/2);
         node1 = nod1;
         node2 = nod2;
     }
@@ -78,7 +81,7 @@ public class Edge
         node2 = nod2;
 //        pos1 = input1;
 //        pos2 = input2;
-//        pos = new Position((pos1.x + pos2.x)/2,(pos1.y + pos2.y)/2);
+//        pos = new Position((pos1.getX() + pos2.getX())/2,(pos1.getY() + pos2.getY())/2);
 
 //        setEdges();
     }
@@ -157,8 +160,9 @@ public class Edge
                     default: break;
                 }//switch
             }//for
+        node1.setEdges(temp);
         if (node2 == null) {
-            nodes = node1.nodes;
+            nodes = node1.getNodes();
             for (int i = 0; i < nodes.size(); i++){
                 tnode = nodes.get(i);
                 if (tnode.hasEdge(this)){
@@ -167,7 +171,7 @@ public class Edge
                     break;
                 }
             }//for
-        }//if 
+        }//if
         if (node2 != null) {
             temp= node2.getEdges();
             for (int i = 0; i < temp.size(); i++){
@@ -182,12 +186,13 @@ public class Edge
                     }
                     break;
                     case 3: {
-                        node2.edges.set(i,this);
+                        temp.set(i,this);
                     }
                     break;
                     default: break;
                 }//switch
             }//for
+            node2.setEdges(temp);
         }//if
         edgeCount = 0;
         if (edge11 != null) edgeCount++;
@@ -295,7 +300,7 @@ public class Edge
 //        points[2] = node1.getPosition();
 //        points[3] = pos2;
 //        for (int i = 0; i < 4; i++)
-//        poly.addPoint((pos.x + points[i].x), (pos.y + points[i].y));
+//        poly.addPoint((pos.getX() + points[i].getX()), (pos.getY() + points[i].getY()));
 //    } // makePoly()
 
 //    /**
@@ -308,12 +313,12 @@ public class Edge
 //        if (nodeCount == 1){g.setColor(TEXT_COLOR);
 //        }else{g.setColor(LINE_OFF_COLOR);}
 //            Position t1 = node1.getPosition();
-//            g.drawLine(pos.x, pos.y, t1.x, t1.y);
+//            g.drawLine(pos.getX(), pos.getY(), t1.getX(), t1.getY());
 ///*
 //            if (node2 != null){
 //            g.setColor(LINE_OFF_COLOR);
 //            Position t2 = node2.getPosition();
-//            g.drawLine(pos.x, pos.y, t2.x, t2.y);
+//            g.drawLine(pos.getX(), pos.getY(), t2.getX(), t2.getY());
 //        }// else
 //
 ///* */
@@ -321,46 +326,118 @@ public class Edge
 //
 //        if (status > 1){
 //            g.setColor(LINE_ON_COLOR);
-//            g.drawLine(pos1.x, pos1.y, pos2.x, pos2.y);
+//            g.drawLine(pos1.getX(), pos1.getY(), pos2.getX(), pos2.getY());
 //        }else if (status == 1){g.setColor(TEST_COLOR);
 //        }else{g.setColor(LINE_OFF_COLOR);}
-//            g.drawLine(pos1.x, pos1.y, pos2.x, pos2.y);
+//            g.drawLine(pos1.getX(), pos1.getY(), pos2.getX(), pos2.getY());
 //        if (status < 0){
 //            g.setColor(TEXT_COLOR);
-////            g.drawLine(pos1.x, pos1.y, pos2.x, pos2.y);
-//            g.drawString("X", (pos.x - (ht / 4)), (pos.y + (ht / 2) - 1));
+////            g.drawLine(pos1.getX(), pos1.getY(), pos2.getX(), pos2.getY());
+//            g.drawString("X", (pos.getX() - (ht / 4)), (pos.getY() + (ht / 2) - 1));
 //        }
 ///*
 //        if (null != node2) {
 //            Position p1 = node2.getPosition();
-//            g.drawLine(pos.x, pos.y, p1.x, p1.y);
+//            g.drawLine(pos.getX(), pos.getY(), p1.getX(), p1.getY());
 //        }
 ///* * /
 //        if (null != edge21) {
 //            Position p1 = edge21.getPosition();
-//            g.drawLine(pos.x, pos.y, p1.x, p1.y);
+//            g.drawLine(pos.getX(), pos.getY(), p1.getX(), p1.getY());
 //        }
 //        if (null != edge22) {
 //            Position p1 = edge22.getPosition();
-//            g.drawLine(pos.x, pos.y, p1.x, p1.y);
+//            g.drawLine(pos.getX(), pos.getY(), p1.getX(), p1.getY());
 //        }
 ///* * /
 //        StringBuilder idStr = new StringBuilder();
 //        idStr.append(id);
 ////        if (edge21 == null) idStr.append("," + 1);
 ////        if (edge22 == null) idStr.append("," + 2);
-//        g.drawString(idStr.toString(), (pos.x - (ht / 4)), (pos.y + (ht / 2) - 1));
+//        g.drawString(idStr.toString(), (pos.getX() - (ht / 4)), (pos.getY() + (ht / 2) - 1));
 ////        System.out.println(idStr);
 ///*
 //        Position t1 = new Edge(node1.getPosition(), pos).pos;
 //        StringBuilder nodStr = new StringBuilder();
 //        nodStr.append(nodeCount);
 //
-//        g.drawString(nodStr.toString(), (t1.x - (ht / 4)), (t1.y + (ht / 2) - 1));
+//        g.drawString(nodStr.toString(), (t1.getX() - (ht / 4)), (t1.getY() + (ht / 2) - 1));
 ///* */
 //     }
     @Override
     public String toString() {
         return pos1.toString() + ", " + pos2.toString();
     }
-} /* End Edge */    
+
+    public Position getPos() {
+        return pos;
+    }
+
+    public void setPos(Position pos) {
+        this.pos = pos;
+    }
+
+    public void setPos1(Position pos1) {
+        this.pos1 = pos1;
+    }
+
+    public void setPos2(Position pos2) {
+        this.pos2 = pos2;
+    }
+
+    public Edge getEdge11() {
+        return edge11;
+    }
+
+    public void setEdge11(Edge edge11) {
+        this.edge11 = edge11;
+    }
+
+    public Edge getEdge12() {
+        return edge12;
+    }
+
+    public void setEdge12(Edge edge12) {
+        this.edge12 = edge12;
+    }
+
+    public Edge getEdge21() {
+        return edge21;
+    }
+
+    public void setEdge21(Edge edge21) {
+        this.edge21 = edge21;
+    }
+
+    public Edge getEdge22() {
+        return edge22;
+    }
+
+    public void setEdge22(Edge edge22) {
+        this.edge22 = edge22;
+    }
+
+    public int getNodeCount() {
+        return nodeCount;
+    }
+
+    public void setNodeCount(int nodeCount) {
+        this.nodeCount = nodeCount;
+    }
+
+    public int getEdgeCount() {
+        return edgeCount;
+    }
+
+    public void setEdgeCount(int edgeCount) {
+        this.edgeCount = edgeCount;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+} /* End Edge */

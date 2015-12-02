@@ -8,6 +8,11 @@ package com.armadillo.slitherlink.altair; /**
  */
 
 import com.armadillo.common.DLog;
+import com.armadillo.slitherlink.common.Edge;
+import com.armadillo.slitherlink.common.INodeFactory;
+import com.armadillo.slitherlink.common.Position;
+import com.armadillo.slitherlink.common.SNode;
+import com.armadillo.slitherlink.hex.HexagonNodeFactory;
 
 import java.util.*;
 
@@ -22,11 +27,15 @@ import java.util.*;
 public class Slitherlink
 {
     private static final String TAG = "Slitherlink";
+    public static final String TYPE_ALTAIR = "Altair";
+    public static final String TYPE_HEXAGON = "Hexagon";
 
     private boolean solved;  //if this is true, any solver methods should quit.
     public String type;  // a description of the puzzle.
-    public SNode root;  // the "first" node of the puzzle.
     public Position base;  
+
+    private INodeFactory factory;
+
     protected int index = 0;
 //    protected int indexE = 0;
     public static int size = SlitherlinkHelper.SIZE, maxSolve = SlitherlinkHelper.MAX_SOLVE;
@@ -63,27 +72,56 @@ public class Slitherlink
      */
     public Slitherlink()
     {
-        type = "Altair";
+        type = TYPE_ALTAIR;
+        solved = false;
+    }
+    /**
+     * Constructor for objects of class Slitherlink, used to make a new blank puzzle.
+     * @param  type Which puzzle should I make?
+     */
+    public Slitherlink(String type)
+    {
+        this.type = type;
         solved = false;
     }
     /**
      * Constructor for objects of class Slitherlink, used to make
      * a new puzzle with base at the given position.
+     * @param  type Which puzzle should I make?
      * @param  start Where should I put this?
      */
-    public Slitherlink(Position start)
+    public Slitherlink(String type, Position start)
     {
-        type = "Altair";
+        this.type = type;
         solved = false;
         base = start;
     }
     /**
      * Constructor for objects of class Slitherlink, used to make 
      * a new puzzle of this depth, centered on an 8 sided node.
+     * @param  type Which puzzle should I make?
      * @param  depth How deep do you want to go?
      */
-    public Slitherlink(int depth)
+    public Slitherlink(String type, int depth)
     {
+        this.type = type;
+        setup(depth, null);
+
+        for (int i = 0; i < edges.size(); i++){
+            edges.get(i).setEdges();
+        }
+    }//Slitherlink(depth)
+    /**
+     * Constructor for objects of class Slitherlink, used to make
+     * a new puzzle of this depth, centered on an 8 sided node.
+     * @param  type Which puzzle should I make?
+     * @param  depth How deep do you want to go?
+     * @param scaleIn the size of the puzzle.
+     */
+    public Slitherlink(String type, int depth, float scaleIn)
+    {
+        this.type = type;
+        scale = scaleIn;
         setup(depth, null);
 
         for (int i = 0; i < edges.size(); i++){
@@ -94,11 +132,13 @@ public class Slitherlink
      * Constructor for objects of class Slitherlink, used to make 
      * a new puzzle of this depth, centered on an 8 sided node, then
      * fill it with the numbers from the list.
+     * @param  type Which puzzle should I make?
      * @param depth How deep do you want to go?
      * @param listIn Use these to fill the puzzle.
      */
-    public Slitherlink(int depth, int[] listIn)  throws Exception
+    public Slitherlink(String type, int depth, int[] listIn)  throws Exception
     {
+        this.type = type;
         setup(depth, listIn);
 
         for (int h = 0; h < maxSolve; h++){
@@ -109,12 +149,14 @@ public class Slitherlink
      * Constructor for objects of class Slitherlink, used to make
      * a new puzzle of this depth, centered on an 8 sided node, then
      * fill it with the numbers from the list.
+     * @param  type Which puzzle should I make?
      * @param depth How deep do you want to go?
      * @param listIn Use these to fill the puzzle.
      * @param scaleIn the size of the puzzle.
      */
-    public Slitherlink(int depth, int[] listIn, float scaleIn)  throws Exception
+    public Slitherlink(String type, int depth, int[] listIn, float scaleIn)  throws Exception
     {
+        this.type = type;
         scale = scaleIn;
         setup(depth, listIn);
 
@@ -124,11 +166,20 @@ public class Slitherlink
     }//Slitherlink(depth, listIn)
 
     public void setup(int depth, int[] list) {
-        type = "Altair";
+        DLog.d(TAG, "setup for type " + type);
         solved = false;
         int factor = (depth + 2) * (int)(size * scale);
         base = new Position(factor,factor);
-        root = new SNode(8, -1, base, scale);
+        SNode root;
+        if (type.equalsIgnoreCase(TYPE_ALTAIR)) {
+            factory = new AltairNodeFactory();
+            root = new SNode(8, -1, base, scale);
+        } else {
+            factory = new HexagonNodeFactory();
+            root = new SNode(6, -1, base, scale);
+        }
+
+        factory.makePoly(root);
 
         int[] clues;
         if (list == null) {
@@ -178,9 +229,11 @@ public class Slitherlink
         Edge tempE;
 //        int countG, countE;
         boolean trigger = true;
-        tlist = temp.grow(1, trigger);
-        DLog.d(TAG, "tlist.size() = " + tlist.size());
-        queue.addAll(tlist);
+        if (count > 0) {
+            tlist = factory.grow(temp, 1, trigger);
+            DLog.d(TAG, "tlist.size() = " + tlist.size());
+            queue.addAll(tlist);
+        }
         int max = queue.size();
         for (int h = 1; h <= count; h++ ){
             if (h == count) {
@@ -191,13 +244,13 @@ public class Slitherlink
                 DLog.d(TAG, "grow: h = " + h + ", i = " + i + ", max = " + max);
                 temp = queue.remove();
                 boolean hasNode = hasNode(temp);
-                if (temp.isGrown || hasNode) {
-                    DLog.d(TAG, "temp.isGrown = " + temp.isGrown + ", hasNode = " + hasNode);
+                if (temp.getIsGrown() || hasNode) {
+                    DLog.d(TAG, "temp.isGrown = " + temp.getIsGrown() + ", hasNode = " + hasNode);
                 } else {
                     temp.setValue(nums[index]);
                     temp.setId(index++);
                     addNode(temp);
-                    tlist = temp.grow(h,trigger);
+                    tlist = factory.grow(temp, h,trigger);
                     queue.addAll(tlist);
 //                    countG = queue.size();
                 }
@@ -227,7 +280,7 @@ public class Slitherlink
             temp = queue.remove();
             temp.link();
             temp.setEdges();
-            edgeQ.addAll(temp.edges);
+            edgeQ.addAll(temp.getEdges());
 //                    countE = edgeQ.size();
         }
 /* */
@@ -306,7 +359,7 @@ public class Slitherlink
             temp = tlist.get(i);
             temp.link();
             temp.setEdges();
-            edgeQ.addAll(temp.edges);
+            edgeQ.addAll(temp.getEdges());
             addNode(temp);
         }
         int max = edgeQ.size();
@@ -407,20 +460,20 @@ public class Slitherlink
  */
             drawn = false;
             temp.count();
-            if (temp.filled + temp.crossed == temp.sides)
+            if (temp.getFilled() + temp.getCrossed() == temp.getSides())
             return true;
-            if (temp.filled == temp.value){
-                    for (int i = 0; i < temp.edges.size(); i++){
-                        tempE = temp.edges.get(i);
-                        if (tempE.status == 0)
+            if (temp.getFilled() == temp.getValue()){
+                    for (int i = 0; i < temp.getEdges().size(); i++){
+                        tempE = temp.getEdges().get(i);
+                        if (tempE.getStatus() == 0)
                         tempE.setStatus(-2);
                     }
                 return true;
             }
-            if (temp.crossed == temp.sides - temp.value){
-                    for (int i = 0; i < temp.edges.size(); i++){
-                        tempE = temp.edges.get(i);
-                        if (tempE.status == 0)
+            if (temp.getCrossed() == temp.getSides() - temp.getValue()){
+                    for (int i = 0; i < temp.getEdges().size(); i++){
+                        tempE = temp.getEdges().get(i);
+                        if (tempE.getStatus() == 0)
                         tempE.setStatus(2);
                     }
                 return true;
@@ -429,9 +482,9 @@ public class Slitherlink
             /* if outside edge, check for extreme values*/
             int temp3 = temp.getSides() - temp.getValue();
 /* */
-            if (temp3 > temp.nodes.size()){
-                for (int j = 0; j < temp.edges.size(); j++){
-                    tempE = temp.edges.get(j);
+            if (temp3 > temp.getNodes().size()){
+                for (int j = 0; j < temp.getEdges().size(); j++){
+                    tempE = temp.getEdges().get(j);
                     temp2 = tempE.otherNode(temp);
                     if (temp2 == null){
                         tempE.setStatus(-2);
@@ -441,9 +494,9 @@ public class Slitherlink
 /* */
             else 
 /* */
-            if (temp.getValue() > temp.nodes.size()){
-                for (int j = 0; j < temp.edges.size(); j++){
-                    tempE = temp.edges.get(j);
+            if (temp.getValue() > temp.getNodes().size()){
+                for (int j = 0; j < temp.getEdges().size(); j++){
+                    tempE = temp.getEdges().get(j);
                     temp2 = tempE.otherNode(temp);
                     if (temp2 == null){
                         tempE.setStatus(2);
@@ -453,10 +506,10 @@ public class Slitherlink
 /* */         
             else 
 /* */             
-            if ((temp.getSides() - temp.nodes.size())
-                > (temp.getValue() - temp.filled) ){
-                for (int j = 0; j < temp.edges.size(); j++){
-                    tempE = temp.edges.get(j);
+            if ((temp.getSides() - temp.getNodes().size())
+                > (temp.getValue() - temp.getFilled()) ){
+                for (int j = 0; j < temp.getEdges().size(); j++){
+                    tempE = temp.getEdges().get(j);
                     temp2 = tempE.otherNode(temp);
                     if (temp2 == null){
                         tempE.setStatus(-2);
@@ -464,9 +517,9 @@ public class Slitherlink
                 }
             }
 /* */
-            else if ((temp.getValue() - temp.filled) == 2){
-                for (int j = 0; j < temp.edges.size(); j++){
-                    tempE = temp.edges.get(j);
+            else if ((temp.getValue() - temp.getFilled()) == 2){
+                for (int j = 0; j < temp.getEdges().size(); j++){
+                    tempE = temp.getEdges().get(j);
                     temp2 = tempE.otherNode(temp);
                     if (temp2 != null){
                         if (temp2.getValue() == 1){
@@ -499,33 +552,33 @@ public class Slitherlink
  */
             drawn = false;
             temp.count();
-            if (temp.filled + temp.crossed == temp.sides)
+            if (temp.getFilled() + temp.getCrossed() == temp.getSides())
             return true;
-            if (temp.filled == temp.value){
-                    for (int i = 0; i < temp.edges.size(); i++){
-                        tempE = temp.edges.get(i);
-                        if (tempE.status == 0)
+            if (temp.getFilled() == temp.getValue()){
+                    for (int i = 0; i < temp.getEdges().size(); i++){
+                        tempE = temp.getEdges().get(i);
+                        if (tempE.getStatus() == 0)
                         tempE.setStatus(-2);
                     }
                 
 //                return true;
             }
-            if (temp.crossed == temp.sides - temp.value){
-                    for (int i = 0; i < temp.edges.size(); i++){
-                        tempE = temp.edges.get(i);
-                        if (tempE.status == 0)
+            if (temp.getCrossed() == temp.getSides() - temp.getValue()){
+                    for (int i = 0; i < temp.getEdges().size(); i++){
+                        tempE = temp.getEdges().get(i);
+                        if (tempE.getStatus() == 0)
                         tempE.setStatus(2);
                     }
                 
 //                return true;
             }
 /* */
-            if (temp.empty == 2 && temp.value > 0){
-                tempE2 = temp.edges.get(temp.edges.size() - 1);
-                for (int j = 0; j < temp.edges.size(); j++){
+            if (temp.getEmpty() == 2 && temp.getValue() > 0){
+                tempE2 = temp.getEdges().get(temp.getEdges().size() - 1);
+                for (int j = 0; j < temp.getEdges().size(); j++){
                     tempE = tempE2;
-                    tempE2 = temp.edges.get(j);
-                    if ((tempE.status == 0) && (tempE2.status == 0)){
+                    tempE2 = temp.getEdges().get(j);
+                    if ((tempE.getStatus() == 0) && (tempE2.getStatus() == 0)){
                         tempE3 = tempE.otherEdge(tempE2);
                         if (tempE3 != null) tempE3.setStatus(2);
                     }
@@ -534,16 +587,16 @@ public class Slitherlink
 /* */
             switch (temp.getValue()){
                 case 0: {
-                    for (int j = 0; j < temp.edges.size(); j++){
-                        tempE = temp.edges.get(j);
+                    for (int j = 0; j < temp.getEdges().size(); j++){
+                        tempE = temp.getEdges().get(j);
                         tempE.setAll(-2);
                         temp2 = tempE.otherNode(temp);
                         if (temp2 != null)
                         switch ((temp2.getSides() - temp2.getValue())){
                             case 3: {
-                    for (int k = 0; k < temp2.edges.size(); k++){
-                        tempE2 = temp2.edges.get(k);
-                        if (tempE2.status == 0) tempE2.setStatus(2);
+                    for (int k = 0; k < temp2.getEdges().size(); k++){
+                        tempE2 = temp2.getEdges().get(k);
+                        if (tempE2.getStatus() == 0) tempE2.setStatus(2);
                     }
                             }break;
                         }
@@ -552,8 +605,8 @@ public class Slitherlink
                 }
                 break;
                 case 1: {
-                    for (int j = 0; j<temp.edges.size(); j++){
-                        tempE = temp.edges.get(j);
+                    for (int j = 0; j< temp.getEdges().size(); j++){
+                        tempE = temp.getEdges().get(j);
                         if (tempE.nodesEqual()
 //                          || (tempE.otherNode(temp) == null)
                           ){
@@ -564,8 +617,8 @@ public class Slitherlink
                 }
                 break;
                 case 2: {
-                    for (int j = 0; j < temp.edges.size(); j++){
-                        tempE = temp.edges.get(j);
+                    for (int j = 0; j < temp.getEdges().size(); j++){
+                        tempE = temp.getEdges().get(j);
                         temp2 = tempE.otherNode(temp);
                         if (temp2 != null){
                             switch (temp2.getValue()){
@@ -579,13 +632,13 @@ public class Slitherlink
                 break;
 /* */
                 case 3: {
-                    if ((temp.nodes.size() == temp.getValue())
-                        &&(temp.sides == temp.getValue() * 2 ))
-                    for (int j = 0; j < temp.edges.size(); j++){
-                        tempE = temp.edges.get(j);
+                    if ((temp.getNodes().size() == temp.getValue())
+                        &&(temp.getSides() == temp.getValue() * 2 ))
+                    for (int j = 0; j < temp.getEdges().size(); j++){
+                        tempE = temp.getEdges().get(j);
                         temp2 = tempE.otherNode(temp);
                         if (temp2 != null){
-                            switch (temp2.sides-temp2.getValue()){
+                            switch (temp2.getSides() -temp2.getValue()){
                                 case 1: {tempE.setStatus(2);} break;
                                 default: break;
                             } 
@@ -601,9 +654,9 @@ public class Slitherlink
             /* if outside edge, check for extreme values*/
             int temp3 = temp.getSides() - temp.getValue();
 /* */
-            if (temp3 > temp.nodes.size()){
-                for (int j = 0; j < temp.edges.size(); j++){
-                    tempE = temp.edges.get(j);
+            if (temp3 > temp.getNodes().size()){
+                for (int j = 0; j < temp.getEdges().size(); j++){
+                    tempE = temp.getEdges().get(j);
                     temp2 = tempE.otherNode(temp);
                     if (temp2 == null){
                         tempE.setStatus(-2);
@@ -613,9 +666,9 @@ public class Slitherlink
 /* */
             else 
 /* */
-            if (temp.getValue() > temp.nodes.size()){
-                for (int j = 0; j < temp.edges.size(); j++){
-                    tempE = temp.edges.get(j);
+            if (temp.getValue() > temp.getNodes().size()){
+                for (int j = 0; j < temp.getEdges().size(); j++){
+                    tempE = temp.getEdges().get(j);
                     temp2 = tempE.otherNode(temp);
                     if (temp2 == null){
                         tempE.setStatus(2);
@@ -625,19 +678,19 @@ public class Slitherlink
 /* */         
             else 
 /* */             
-            if ((temp.getSides() - temp.nodes.size())
-                > (temp.getValue() - temp.filled) ){
-                for (int j = 0; j < temp.edges.size(); j++){
-                    tempE = temp.edges.get(j);
+            if ((temp.getSides() - temp.getNodes().size())
+                > (temp.getValue() - temp.getFilled()) ){
+                for (int j = 0; j < temp.getEdges().size(); j++){
+                    tempE = temp.getEdges().get(j);
                     temp2 = tempE.otherNode(temp);
                     if (temp2 == null){
                         tempE.setStatus(-2);
                     }
                 }
             }
-            else if ((temp.getValue() - temp.filled) == 2){
-                for (int j = 0; j < temp.edges.size(); j++){
-                    tempE = temp.edges.get(j);
+            else if ((temp.getValue() - temp.getFilled()) == 2){
+                for (int j = 0; j < temp.getEdges().size(); j++){
+                    tempE = temp.getEdges().get(j);
                     temp2 = tempE.otherNode(temp);
                     if (temp2 != null){
                         if (temp2.getValue() == 1){
@@ -652,24 +705,24 @@ public class Slitherlink
             if (temp.getValue() != -1)
             switch (temp3){
                 case 0: {
-                    for (int j = 0; j<temp.edges.size(); j++){
-                        tempE = temp.edges.get(j);
+                    for (int j = 0; j< temp.getEdges().size(); j++){
+                        tempE = temp.getEdges().get(j);
                         tempE.setStatus(2);
                     drawn = true;
                     }
                 }
                 break;
                 case 1: {
-                    max = temp.edges.size();
+                    max = temp.getEdges().size();
                     for (int j = 0; j < max; j++){
-                        tempE = temp.edges.get(j);
+                        tempE = temp.getEdges().get(j);
                         temp2 = tempE.otherNode(temp);
                   if (temp2 != null) {
                      if ((temp2.getSides() - temp2.getValue()) == 1){
                      // s shape, to prevent a snowman
                         tempE.setStatus(2);
                         for (int k = 2; k < max - 1; k++){
-                            tempE2 = temp.edges.get((k + j) % max);
+                            tempE2 = temp.getEdges().get((k + j) % max);
                             tempE2.setStatus(2);}
                         } else if (temp2.getValue() == 1){
                             tempE.setStatus(2);
@@ -695,56 +748,56 @@ public class Slitherlink
     {
         Edge temp2;
         boolean drawn;
-        int stat = temp.status;
+        int stat = temp.getStatus();
 /*
  *  edge logic here
  */
         {
             switch (stat){
                 case 0: {
-                    if (temp.edge21 != null){
-                        if (temp.edge11.status != stat) 
-                            {if (temp.edge11.status == temp.edge21.status)
+                    if (temp.getEdge21() != null){
+                        if (temp.getEdge11().getStatus() != stat)
+                            {if (temp.getEdge11().getStatus() == temp.getEdge21().getStatus())
                                 {temp.setStatus(-2);}
-                        else if (temp.edge11.status == -temp.edge21.status)
+                        else if (temp.getEdge11().getStatus() == -temp.getEdge21().getStatus())
                             {temp.setStatus(2);} 
                             }
                     }
-                    if (temp.edge22 != null){
-                        if (temp.edge12.status != stat)
-                            {if (temp.edge12.status == temp.edge22.status)
+                    if (temp.getEdge22() != null){
+                        if (temp.getEdge12().getStatus() != stat)
+                            {if (temp.getEdge12().getStatus() == temp.getEdge22().getStatus())
                                 {temp.setStatus(-2);}
-                        else if (temp.edge12.status == -temp.edge22.status)
+                        else if (temp.getEdge12().getStatus() == -temp.getEdge22().getStatus())
                             {temp.setStatus(2);} 
                             }
                     }
-                    if (temp.edge21 == null && temp.edge22 == null){
-                        if (temp.edge11.status == temp.edge12.status)
-                            {temp.setStatus(temp.edge11.status);} 
+                    if (temp.getEdge21() == null && temp.getEdge22() == null){
+                        if (temp.getEdge11().getStatus() == temp.getEdge12().getStatus())
+                            {temp.setStatus(temp.getEdge11().getStatus());}
                     } 
                 }
                 break;
                 default : {
-                    if (temp.edge21 != null){
-                        if (temp.edge11.status == stat){
-                            temp.edge21.setStatus(-2);
+                    if (temp.getEdge21() != null){
+                        if (temp.getEdge11().getStatus() == stat){
+                            temp.getEdge21().setStatus(-2);
 //                        } else if (temp.edge11.status == -stat){
 //                            temp.edge21.setStatus(2);
                         }
-                        if (temp.edge21.status == stat){
-                            temp.edge11.setStatus(-2);
+                        if (temp.getEdge21().getStatus() == stat){
+                            temp.getEdge11().setStatus(-2);
 //                        } else if (temp.edge21.status == -stat){
 //                            temp.edge11.setStatus(2);
                         }
                     }
-                    if (temp.edge22 != null){
-                        if (temp.edge12.status == stat){
-                            temp.edge22.setStatus(-2);
+                    if (temp.getEdge22() != null){
+                        if (temp.getEdge12().getStatus() == stat){
+                            temp.getEdge22().setStatus(-2);
 //                        } else if (temp.edge12.status == -stat){
 //                            temp.edge22.setStatus(2);
                         }
-                        if (temp.edge22.status == stat){
-                            temp.edge12.setStatus(-2);
+                        if (temp.getEdge22().getStatus() == stat){
+                            temp.getEdge12().setStatus(-2);
 //                        } else if (temp.edge22.status == -stat){
 //                            temp.edge12.setStatus(2);
                         }
