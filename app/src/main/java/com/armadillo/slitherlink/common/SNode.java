@@ -501,9 +501,10 @@ public class SNode
     {
         /* */        
         StringBuilder valStr = new StringBuilder();
-        if (value == -1) {
-            valStr.append("");
-        } else {
+        valStr.append(id);
+        valStr.append(", ");
+
+        if (value != -1) {
             valStr.append(value);
             valStr.append(", ");
         }

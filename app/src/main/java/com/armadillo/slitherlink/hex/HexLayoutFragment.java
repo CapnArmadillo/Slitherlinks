@@ -116,8 +116,11 @@ public class HexLayoutFragment extends Fragment {
 
         try {
             if (slitherlink == null) {
-//                slitherlink = new Slitherlink("Hexagon", 2, SlitherlinkHelper.sl31, 1.5f);
-                slitherlink = new Slitherlink("Hexagon", 2);
+//                slitherlink = new Slitherlink(Slitherlink.TYPE_HEXAGON, 2, SlitherlinkHelper.sl31, 1.5f);
+//                slitherlink = new Slitherlink(Slitherlink.TYPE_HEXAGON, 1, 2.0f);
+//                slitherlink = new Slitherlink(Slitherlink.TYPE_HEXAGON, 1, 1.5f);
+//                slitherlink = new Slitherlink(Slitherlink.TYPE_HEXAGON, 2, 2.0f);
+                slitherlink = new Slitherlink(Slitherlink.TYPE_HEXAGON, 2, 1.5f);
 
                 nodes = slitherlink.getNodes();
                 edges = slitherlink.getEdges();

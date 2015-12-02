@@ -52,30 +52,40 @@ public class HexagonNodeFactory implements INodeFactory
             switch (i % 3){
                 case 1:
                     x = 0;
-                    y = 34;
+                    y = 36;
                     break;
                 default:
                     x = 30;
-                    y = 17;
+                    y = 18;
                     break;
             }
 
-            switch (i){
-                case 3:
-                    ySign = -1;
-                    break;
-                case 4:
-                    xSign = -1;
-                    ySign = -1;
-                    break;
-                case 5:
-                    xSign = -1;
-                    ySign = -1;
-                    break;
-                case 6:
-                    xSign = -1;
-                    break;
+            if (i < 4) {
+                xSign = 1;
+            } else {
+                xSign = -1;
             }
+            if (i % 6 < 3) {
+                ySign = 1;
+            } else {
+                ySign = -1;
+            }
+//            switch (i){
+//                case 1:
+//                case 2:
+//                    ySign = 1;
+//                    break;
+//                case 3:
+//                    ySign = -1;
+//                    break;
+//                case 4:
+//                case 5:
+//                    ySign = -1;
+//                    break;
+//                case 6:
+//                    ySign = 1;
+//                    break;
+//            }
 
             temp = new SNode(shape, input, pos, xSign * (int)(x * scale), ySign * (int)(y * scale), 0, scale);
             makePoly(temp);
@@ -110,11 +120,11 @@ public class HexagonNodeFactory implements INodeFactory
 
         Position[] points = new Position[sides];
 
-        points[1] = new Position(-10, -17, scale);
-        points[2] = new Position(10, -17, scale);
+        points[1] = new Position(-10, -18, scale);
+        points[2] = new Position(10, -18, scale);
         points[3] = new Position(20, 0, scale);
-        points[4] = new Position(10, 17, scale);
-        points[5] = new Position(-10, 17, scale);
+        points[4] = new Position(10, 18, scale);
+        points[5] = new Position(-10, 18, scale);
         points[0] = new Position(-20, 0, scale);
 
         node.makePath(points);

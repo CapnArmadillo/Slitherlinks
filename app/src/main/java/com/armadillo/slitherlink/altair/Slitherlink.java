@@ -27,10 +27,11 @@ import java.util.*;
 public class Slitherlink
 {
     private static final String TAG = "Slitherlink";
+    public static final String TYPE_ALTAIR = "Altair";
+    public static final String TYPE_HEXAGON = "Hexagon";
 
     private boolean solved;  //if this is true, any solver methods should quit.
     public String type;  // a description of the puzzle.
-    public SNode root;  // the "first" node of the puzzle.
     public Position base;  
 
     private INodeFactory factory;
@@ -71,7 +72,7 @@ public class Slitherlink
      */
     public Slitherlink()
     {
-        type = "Altair";
+        type = TYPE_ALTAIR;
         solved = false;
     }
     /**
@@ -86,6 +87,7 @@ public class Slitherlink
     /**
      * Constructor for objects of class Slitherlink, used to make
      * a new puzzle with base at the given position.
+     * @param  type Which puzzle should I make?
      * @param  start Where should I put this?
      */
     public Slitherlink(String type, Position start)
@@ -97,6 +99,7 @@ public class Slitherlink
     /**
      * Constructor for objects of class Slitherlink, used to make 
      * a new puzzle of this depth, centered on an 8 sided node.
+     * @param  type Which puzzle should I make?
      * @param  depth How deep do you want to go?
      */
     public Slitherlink(String type, int depth)
@@ -109,9 +112,27 @@ public class Slitherlink
         }
     }//Slitherlink(depth)
     /**
+     * Constructor for objects of class Slitherlink, used to make
+     * a new puzzle of this depth, centered on an 8 sided node.
+     * @param  type Which puzzle should I make?
+     * @param  depth How deep do you want to go?
+     * @param scaleIn the size of the puzzle.
+     */
+    public Slitherlink(String type, int depth, float scaleIn)
+    {
+        this.type = type;
+        scale = scaleIn;
+        setup(depth, null);
+
+        for (int i = 0; i < edges.size(); i++){
+            edges.get(i).setEdges();
+        }
+    }//Slitherlink(depth)
+    /**
      * Constructor for objects of class Slitherlink, used to make 
      * a new puzzle of this depth, centered on an 8 sided node, then
      * fill it with the numbers from the list.
+     * @param  type Which puzzle should I make?
      * @param depth How deep do you want to go?
      * @param listIn Use these to fill the puzzle.
      */
@@ -128,6 +149,7 @@ public class Slitherlink
      * Constructor for objects of class Slitherlink, used to make
      * a new puzzle of this depth, centered on an 8 sided node, then
      * fill it with the numbers from the list.
+     * @param  type Which puzzle should I make?
      * @param depth How deep do you want to go?
      * @param listIn Use these to fill the puzzle.
      * @param scaleIn the size of the puzzle.
@@ -148,7 +170,8 @@ public class Slitherlink
         solved = false;
         int factor = (depth + 2) * (int)(size * scale);
         base = new Position(factor,factor);
-        if (type.equalsIgnoreCase("Altair")) {
+        SNode root;
+        if (type.equalsIgnoreCase(TYPE_ALTAIR)) {
             factory = new AltairNodeFactory();
             root = new SNode(8, -1, base, scale);
         } else {

@@ -2,6 +2,7 @@ package com.armadillo.slitherlink.altair;
 
 import android.test.ActivityTestCase;
 
+import com.armadillo.slitherlink.common.INodeFactory;
 import com.armadillo.slitherlink.common.Position;
 import com.armadillo.slitherlink.common.SNode;
 
@@ -28,7 +29,7 @@ public class TestAltair extends ActivityTestCase {
 
     public void testS3() {
         try {
-            Slitherlink s3 = new Slitherlink(3, SlitherlinkHelper.sl31);
+            Slitherlink s3 = new Slitherlink(Slitherlink.TYPE_ALTAIR, 3, SlitherlinkHelper.sl31);
         } catch (Exception e) {
 
         }
@@ -39,7 +40,7 @@ public class TestAltair extends ActivityTestCase {
             Slitherlink s17[] = new Slitherlink[4];
             for (int j = 0; j < 4; j++)
             {
-                s17[j] = new Slitherlink(6, SlitherlinkHelper.sl7a[j]);
+                s17[j] = new Slitherlink(Slitherlink.TYPE_ALTAIR, 6, SlitherlinkHelper.sl7a[j]);
             }
         } catch (Exception e) {
 
@@ -48,22 +49,25 @@ public class TestAltair extends ActivityTestCase {
 
     public void testS10() {
         try {
-            Slitherlink s10 = new Slitherlink(3);
+            Slitherlink s10 = new Slitherlink(Slitherlink.TYPE_ALTAIR, 3);
             s10.base = new Position(130,130);
             int xMax = 5;
             int off = 200;
             int[] clues = new int[21];
+            SNode root;
+            INodeFactory factory = new AltairNodeFactory();
             for (int tsize = 0; tsize < xMax; tsize++){
                 for (int ang = 0; ang < 3; ang++){
                     s10.index = 0;
                     clues = s10.fill2(SlitherlinkHelper.sl2[tsize + ang * xMax]);
-                    s10.root = new
+                    root = new
                             SNode(8,-1,s10.base,off * tsize, off * ang, ang + 1, 2.0f);
-                    s10.root.setValue(clues[s10.index]);
-                    s10.root.setHighlight(2);
-                    s10.root.setId(s10.index++);
+                    factory.makePoly(root);
+                    root.setValue(clues[s10.index]);
+                    root.setHighlight(2);
+                    root.setId(s10.index++);
 //                    s10.addNode(s10.root);
-                    s10.grow(s10.addNode(s10.root),2,clues);
+                    s10.grow(s10.addNode(root),2,clues);
                 }
             }
             for (int h = 0; h < maxSolve; h++){
