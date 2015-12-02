@@ -229,9 +229,11 @@ public class Slitherlink
         Edge tempE;
 //        int countG, countE;
         boolean trigger = true;
-        tlist = factory.grow(temp, 1, trigger);
-        DLog.d(TAG, "tlist.size() = " + tlist.size());
-        queue.addAll(tlist);
+        if (count > 0) {
+            tlist = factory.grow(temp, 1, trigger);
+            DLog.d(TAG, "tlist.size() = " + tlist.size());
+            queue.addAll(tlist);
+        }
         int max = queue.size();
         for (int h = 1; h <= count; h++ ){
             if (h == count) {

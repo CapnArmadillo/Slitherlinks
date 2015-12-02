@@ -10,7 +10,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -36,6 +38,8 @@ public class HexLayoutFragment extends Fragment {
     private ImageView image;
     private TextView coordinates, nearest;
     private ToggleButton clickMode;
+
+    private RadioButton depth0, depth1, depth2, depth3, depth4;
 
     private Slitherlink slitherlink;
     private ArrayList<SNode> nodes;
@@ -72,6 +76,18 @@ public class HexLayoutFragment extends Fragment {
         nearest = (TextView)view.findViewById(R.id.nearest);
 
         clickMode = (ToggleButton)view.findViewById(R.id.clickMode);
+
+        depth0 = (RadioButton)view.findViewById(R.id.depth0);
+        depth1 = (RadioButton)view.findViewById(R.id.depth1);
+        depth2 = (RadioButton)view.findViewById(R.id.depth2);
+        depth3 = (RadioButton)view.findViewById(R.id.depth3);
+        depth4 = (RadioButton)view.findViewById(R.id.depth4);
+
+        setListener(depth0);
+        setListener(depth1);
+        setListener(depth2);
+        setListener(depth3);
+        setListener(depth4);
 
         return view;
     }
@@ -118,15 +134,15 @@ public class HexLayoutFragment extends Fragment {
             if (slitherlink == null) {
 //                slitherlink = new Slitherlink(Slitherlink.TYPE_HEXAGON, 2, SlitherlinkHelper.sl31, 1.5f);
 //                slitherlink = new Slitherlink(Slitherlink.TYPE_HEXAGON, 1, 2.0f);
-//                slitherlink = new Slitherlink(Slitherlink.TYPE_HEXAGON, 1, 1.5f);
+                slitherlink = new Slitherlink(Slitherlink.TYPE_HEXAGON, 1, 1.5f);
 //                slitherlink = new Slitherlink(Slitherlink.TYPE_HEXAGON, 2, 2.0f);
-                slitherlink = new Slitherlink(Slitherlink.TYPE_HEXAGON, 2, 1.5f);
+//                slitherlink = new Slitherlink(Slitherlink.TYPE_HEXAGON, 2, 1.5f);
+//                slitherlink = new Slitherlink(Slitherlink.TYPE_HEXAGON, 3, 1.5f);
+//                slitherlink = new Slitherlink(Slitherlink.TYPE_HEXAGON, 4, 1.5f);
 
                 nodes = slitherlink.getNodes();
                 edges = slitherlink.getEdges();
             }
-//            fillNodes();
-//            board.requestLayout();
         } catch (Exception e) {
 
         }
@@ -189,7 +205,32 @@ public class HexLayoutFragment extends Fragment {
             Position pos = node.getPosition();
             canvas.drawText("" + node.getValue(), pos.getX() - xTextOffset, pos.getY() + yTextOffset, paint);
 //            canvas.drawText("" + node.getId() + "," + node.getValue(), pos.getX() - xTextOffset, pos.getY() + yTextOffset, paint);
+//            canvas.drawText("" + node.getId(), pos.getX() - xTextOffset, pos.getY() + yTextOffset, paint);
         }
+    }
+
+    public void setListener(CompoundButton button) {
+        button.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    String text = buttonView.getText().toString();
+                    if (text != null) {
+                        int depth = Integer.parseInt(text);
+                        slitherlink = new Slitherlink(Slitherlink.TYPE_HEXAGON, depth, 1.5f);
+
+                        nodes = slitherlink.getNodes();
+                        edges = slitherlink.getEdges();
+
+                        if (treeLoaded && canvas != null) {
+                            canvas.drawColor(getResources().getColor(R.color.white));
+                            fillNodes();
+                            fillEdges();
+                        }
+                    }
+                }
+            }
+        });
     }
 
     public void setOnTouchListenerForView(View view) {
