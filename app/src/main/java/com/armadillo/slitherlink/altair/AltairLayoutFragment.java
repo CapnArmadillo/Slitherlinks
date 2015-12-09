@@ -19,6 +19,7 @@ import com.armadillo.common.DLog;
 import com.armadillo.slitherlink.common.Edge;
 import com.armadillo.slitherlink.common.Position;
 import com.armadillo.slitherlink.common.SNode;
+import com.armadillo.slitherlink.common.SlitherlinkHelper;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -123,7 +124,7 @@ public class AltairLayoutFragment extends Fragment {
 //                    for (int tsize = 0; tsize < xMax; tsize++){
 //                        for (int ang = 0; ang < 3; ang++){
 //                            slitherlink.index = 0;
-//                            clues = slitherlink.fill2(SlitherlinkHelper.sl2[tsize + ang * xMax]);
+//                            clues = slitherlink.fill2(SlitherlinkHelper.alt2[tsize + ang * xMax]);
 //                            slitherlink.root = new
 //                                    SNode(8,-1,base,off * tsize, off * ang, ang + 1, 2.0f);
 //                            slitherlink.root.setValue(clues[slitherlink.index]);
@@ -138,21 +139,21 @@ public class AltairLayoutFragment extends Fragment {
 //                } catch (Exception e) {
 //                }
 
-                slitherlink = new Slitherlink(Slitherlink.TYPE_ALTAIR, 3, SlitherlinkHelper.sl31, 1.5f);
-//                slitherlink = new Slitherlink(Slitherlink.TYPE_ALTAIR, 2, SlitherlinkHelper.sl20, 2.0f);
-//                slitherlink = new Slitherlink(Slitherlink.TYPE_ALTAIR, 2, SlitherlinkHelper.sl21, 2.0f);
-//                slitherlink = new Slitherlink(Slitherlink.TYPE_ALTAIR, 2, SlitherlinkHelper.sl22, 2.0f);
-//                slitherlink = new Slitherlink(Slitherlink.TYPE_ALTAIR, 2, SlitherlinkHelper.sl23, 2.0f);
-//                slitherlink = new Slitherlink(Slitherlink.TYPE_ALTAIR, 2, SlitherlinkHelper.sl24, 2.0f);
-//                slitherlink = new Slitherlink(Slitherlink.TYPE_ALTAIR, 2, SlitherlinkHelper.sl25, 2.0f);
-//                slitherlink = new Slitherlink(Slitherlink.TYPE_ALTAIR, 2, SlitherlinkHelper.sl26, 2.0f);
-//                slitherlink = new Slitherlink(Slitherlink.TYPE_ALTAIR, 2, SlitherlinkHelper.sl27, 2.0f);
-//                slitherlink = new Slitherlink(Slitherlink.TYPE_ALTAIR, 2, SlitherlinkHelper.sl28, 2.0f);
-//                slitherlink = new Slitherlink(Slitherlink.TYPE_ALTAIR, 2, SlitherlinkHelper.sl29, 2.0f);
-//                slitherlink = new Slitherlink(Slitherlink.TYPE_ALTAIR, 6, SlitherlinkHelper.sl71, 1.0f);
-//                slitherlink = new Slitherlink(Slitherlink.TYPE_ALTAIR, 6, SlitherlinkHelper.sl72, 1.0f);
-//                slitherlink = new Slitherlink(Slitherlink.TYPE_ALTAIR, 6, SlitherlinkHelper.sl73, 1.0f);
-//                slitherlink = new Slitherlink(Slitherlink.TYPE_ALTAIR, 6, SlitherlinkHelper.sl74, 1.0f);
+                slitherlink = new Slitherlink(Slitherlink.TYPE_ALTAIR, 3, SlitherlinkHelper.alt31, 1.5f);
+//                slitherlink = new Slitherlink(Slitherlink.TYPE_ALTAIR, 2, SlitherlinkHelper.alt20, 2.0f);
+//                slitherlink = new Slitherlink(Slitherlink.TYPE_ALTAIR, 2, SlitherlinkHelper.alt21, 2.0f);
+//                slitherlink = new Slitherlink(Slitherlink.TYPE_ALTAIR, 2, SlitherlinkHelper.alt22, 2.0f);
+//                slitherlink = new Slitherlink(Slitherlink.TYPE_ALTAIR, 2, SlitherlinkHelper.alt23, 2.0f);
+//                slitherlink = new Slitherlink(Slitherlink.TYPE_ALTAIR, 2, SlitherlinkHelper.alt24, 2.0f);
+//                slitherlink = new Slitherlink(Slitherlink.TYPE_ALTAIR, 2, SlitherlinkHelper.alt25, 2.0f);
+//                slitherlink = new Slitherlink(Slitherlink.TYPE_ALTAIR, 2, SlitherlinkHelper.alt26, 2.0f);
+//                slitherlink = new Slitherlink(Slitherlink.TYPE_ALTAIR, 2, SlitherlinkHelper.alt27, 2.0f);
+//                slitherlink = new Slitherlink(Slitherlink.TYPE_ALTAIR, 2, SlitherlinkHelper.alt28, 2.0f);
+//                slitherlink = new Slitherlink(Slitherlink.TYPE_ALTAIR, 2, SlitherlinkHelper.alt29, 2.0f);
+//                slitherlink = new Slitherlink(Slitherlink.TYPE_ALTAIR, 6, SlitherlinkHelper.alt71, 1.0f);
+//                slitherlink = new Slitherlink(Slitherlink.TYPE_ALTAIR, 6, SlitherlinkHelper.alt72, 1.0f);
+//                slitherlink = new Slitherlink(Slitherlink.TYPE_ALTAIR, 6, SlitherlinkHelper.alt73, 1.0f);
+//                slitherlink = new Slitherlink(Slitherlink.TYPE_ALTAIR, 6, SlitherlinkHelper.alt74, 1.0f);
                 nodes = slitherlink.getNodes();
                 edges = slitherlink.getEdges();
             }
