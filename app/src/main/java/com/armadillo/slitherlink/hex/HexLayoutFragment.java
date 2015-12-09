@@ -13,6 +13,7 @@ import android.view.ViewTreeObserver;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -22,7 +23,7 @@ import com.armadillo.slitherlink.common.Edge;
 import com.armadillo.slitherlink.common.Position;
 import com.armadillo.slitherlink.common.SNode;
 import com.armadillo.slitherlink.altair.Slitherlink;
-import com.armadillo.slitherlink.altair.SlitherlinkHelper;
+import com.armadillo.slitherlink.common.SlitherlinkHelper;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,7 +40,8 @@ public class HexLayoutFragment extends Fragment {
     private TextView coordinates, nearest;
     private ToggleButton clickMode;
 
-    private RadioButton depth0, depth1, depth2, depth3, depth4;
+    private RadioButton depth0, depth1, depth2, depth3, depth4, depth5, depth6;
+    private Spinner depth;
 
     private Slitherlink slitherlink;
     private ArrayList<SNode> nodes;
@@ -77,17 +79,22 @@ public class HexLayoutFragment extends Fragment {
 
         clickMode = (ToggleButton)view.findViewById(R.id.clickMode);
 
+//        depth = (Spinner)view.findViewById(R.id.depth);
         depth0 = (RadioButton)view.findViewById(R.id.depth0);
         depth1 = (RadioButton)view.findViewById(R.id.depth1);
         depth2 = (RadioButton)view.findViewById(R.id.depth2);
         depth3 = (RadioButton)view.findViewById(R.id.depth3);
         depth4 = (RadioButton)view.findViewById(R.id.depth4);
+        depth5 = (RadioButton)view.findViewById(R.id.depth5);
+        depth6 = (RadioButton)view.findViewById(R.id.depth6);
 
         setListener(depth0);
         setListener(depth1);
         setListener(depth2);
         setListener(depth3);
         setListener(depth4);
+        setListener(depth5);
+        setListener(depth6);
 
         return view;
     }
@@ -132,12 +139,17 @@ public class HexLayoutFragment extends Fragment {
 
         try {
             if (slitherlink == null) {
-//                slitherlink = new Slitherlink(Slitherlink.TYPE_HEXAGON, 2, SlitherlinkHelper.sl31, 1.5f);
+//                slitherlink = new Slitherlink(Slitherlink.TYPE_HEXAGON, 2, SlitherlinkHelper.alt31, 1.5f);
 //                slitherlink = new Slitherlink(Slitherlink.TYPE_HEXAGON, 1, 2.0f);
                 slitherlink = new Slitherlink(Slitherlink.TYPE_HEXAGON, 1, 1.5f);
+//                slitherlink = new Slitherlink(Slitherlink.TYPE_HEXAGON, 1, SlitherlinkHelper.hex10, 1.5f);
+//                slitherlink = new Slitherlink(Slitherlink.TYPE_HEXAGON, 1, SlitherlinkHelper.hex11, 1.5f);
 //                slitherlink = new Slitherlink(Slitherlink.TYPE_HEXAGON, 2, 2.0f);
+//                slitherlink = new Slitherlink(Slitherlink.TYPE_HEXAGON, 2, SlitherlinkHelper.hex20, 1.5f);
 //                slitherlink = new Slitherlink(Slitherlink.TYPE_HEXAGON, 2, 1.5f);
+//                slitherlink = new Slitherlink(Slitherlink.TYPE_HEXAGON, 3, SlitherlinkHelper.hex30, 1.5f);
 //                slitherlink = new Slitherlink(Slitherlink.TYPE_HEXAGON, 3, 1.5f);
+//                slitherlink = new Slitherlink(Slitherlink.TYPE_HEXAGON, 4, SlitherlinkHelper.hex40, 1.5f);
 //                slitherlink = new Slitherlink(Slitherlink.TYPE_HEXAGON, 4, 1.5f);
 
                 nodes = slitherlink.getNodes();

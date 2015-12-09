@@ -5,6 +5,7 @@ import android.test.ActivityTestCase;
 import com.armadillo.slitherlink.common.INodeFactory;
 import com.armadillo.slitherlink.common.Position;
 import com.armadillo.slitherlink.common.SNode;
+import com.armadillo.slitherlink.common.SlitherlinkHelper;
 
 /**
  * Created by john.pushnik on 11/16/15.
@@ -29,7 +30,7 @@ public class TestAltair extends ActivityTestCase {
 
     public void testS3() {
         try {
-            Slitherlink s3 = new Slitherlink(Slitherlink.TYPE_ALTAIR, 3, SlitherlinkHelper.sl31);
+            Slitherlink s3 = new Slitherlink(Slitherlink.TYPE_ALTAIR, 3, SlitherlinkHelper.alt31);
         } catch (Exception e) {
 
         }
@@ -40,7 +41,7 @@ public class TestAltair extends ActivityTestCase {
             Slitherlink s17[] = new Slitherlink[4];
             for (int j = 0; j < 4; j++)
             {
-                s17[j] = new Slitherlink(Slitherlink.TYPE_ALTAIR, 6, SlitherlinkHelper.sl7a[j]);
+                s17[j] = new Slitherlink(Slitherlink.TYPE_ALTAIR, 6, SlitherlinkHelper.alt7a[j]);
             }
         } catch (Exception e) {
 
@@ -59,7 +60,7 @@ public class TestAltair extends ActivityTestCase {
             for (int tsize = 0; tsize < xMax; tsize++){
                 for (int ang = 0; ang < 3; ang++){
                     s10.index = 0;
-                    clues = s10.fill2(SlitherlinkHelper.sl2[tsize + ang * xMax]);
+                    clues = s10.fill2(SlitherlinkHelper.alt2[tsize + ang * xMax]);
                     root = new
                             SNode(8,-1,s10.base,off * tsize, off * ang, ang + 1, 2.0f);
                     factory.makePoly(root);
