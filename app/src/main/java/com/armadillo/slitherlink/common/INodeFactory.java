@@ -8,5 +8,7 @@ import java.util.ArrayList;
 public interface INodeFactory {
     ArrayList<SNode> grow(SNode node, int input, boolean trigger);
     void makePoly(SNode node);
+    int[] fill(int depth, int[] nums);
+
 
 }

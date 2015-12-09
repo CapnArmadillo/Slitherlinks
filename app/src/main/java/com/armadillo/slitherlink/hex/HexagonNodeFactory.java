@@ -131,4 +131,178 @@ public class HexagonNodeFactory implements INodeFactory
         node.addEdges();
     } // makePoly()
 
-}// Snode
+    @Override
+    public int[] fill(int depth, int[] nums){
+        int[] clues;
+        if (nums == null) {
+            clues = fill(depth);
+        } else {
+            clues = nums;
+        }
+        switch (depth) {
+            case 1: {
+                clues = fill1(clues);
+                break;
+            }
+            case 2: {
+                clues = fill2(clues);
+                break;
+            }
+            case 3: {
+                clues = fill3(clues);
+                break;
+            }
+//            case 6:
+//            case 7:
+//            case 8:
+//            {
+//                clues = fill7(nums);
+//                break;
+//            }
+            default: {
+                clues = fill(depth);
+            }
+        }
+        return clues;
+    }
+
+    /**
+     * This is used to fill a sample puzzle.  See fill7 for the scoop.
+     * @param depth Size of the list with which to fill the puzzle.
+     * @return The new list of reorganized numbers.
+     */
+    public int[] fill(int depth)
+    {
+        int size = 3 * depth * (depth + 1) + 1; // from http://oeis.org/A003215
+        int[] fills = new int[size];
+        for (int i = 0; i < size; i++){
+            fills[i] = i;
+        }
+        return fills;
+    } // fill(depth)
+    /**
+     * This is used to fill a level 1 puzzle.  See fill7 for the scoop.
+     * @param nums List of numbers with which to fill the puzzle.
+     * @return The new list of reorganized numbers.
+     */
+    public int[] fill1(int[] nums)
+    {
+        int size = 7;
+        int[] fills = new int[size];
+        int index;
+        for (int i = 0; i < size; i++){
+            switch (i){
+                case    0   :   index = 3  ;   break;
+                case    1   :   index = 5  ;   break;
+                case    2   :   index = 6  ;   break;
+                case    3   :   index = 4  ;   break;
+                case    4   :   index = 1  ;   break;
+                case    5   :   index = 0   ;   break;
+                case    6   :   index = 2   ;   break;
+                default: index = -1; break;
+            }
+            fills[i] = nums[index];
+        }
+        return fills;
+    } // fill1()
+    /**
+     * This is used to fill a level 2 puzzle.  See fill7 for the scoop.
+     * @param nums List of numbers with which to fill the puzzle.
+     * @return The new list of reorganized numbers.
+     */
+    public int[] fill2(int[] nums)
+    {
+        int size = 19;
+        int[] fills = new int[size];
+        int index;
+        for (int i = 0; i < size; i++){
+            switch (i){
+                case    0   :   index = 9  ;   break;
+                case    1   :   index = 13  ;   break;
+                case    2   :   index = 14  ;   break;
+                case    3   :   index = 10  ;   break;
+                case    4   :   index = 5  ;   break;
+                case    5   :   index = 4   ;   break;
+                case    6   :   index = 8   ;   break;
+                case    7   :   index = 16   ;   break;
+                case    8   :   index = 17   ;   break;
+                case    9   :   index = 12  ;   break;
+                case    10  :   index = 18   ;   break;
+                case    11  :   index = 15  ;   break;
+                case    12  :   index = 11  ;   break;
+                case    13  :   index = 6  ;   break;
+                case    14  :   index = 2  ;   break;
+                case    15  :   index = 1  ;   break;
+                case    16  :   index = 0   ;   break;
+                case    17  :   index = 3   ;   break;
+                case    18  :   index = 7   ;   break;
+                default: index = -1; break;
+            }
+            fills[i] = nums[index];
+        }
+        return fills;
+    } // fill2()
+    /**
+     * This is used to fill a level 3 puzzle, that's all.  The order in
+     * which grow creates the nodes is not so easy to input from existing
+     * puzzles.  This reorders that list for easy input.  Lest you think I
+     * went crazy on the input, I used excel to write this.
+     * @param nums List of numbers with which to fill the puzzle.
+     * @return The new list of reorganized numbers.
+     */
+    public int[] fill3(int[] nums)
+    {
+        int size = 37;
+        int[] fills = new int[size];
+        int index;
+        for (int i = 0; i < size; i++){
+            switch (i){
+                case    0   :   index = 18  ;   break;
+                case    1   :   index = 24  ;   break;
+                case    2   :   index = 25  ;   break;
+                case    3   :   index = 19  ;   break;
+                case    4   :   index = 12  ;   break;
+                case    5   :   index = 11  ;   break;
+                case    6   :   index = 17  ;   break;
+                case    7   :   index = 29  ;   break;
+                case    8   :   index = 30  ;   break;
+                case    9   :   index = 23  ;   break;
+                case    10  :   index = 31  ;   break;
+                case    11  :   index = 26  ;   break;
+                case    12  :   index = 20  ;   break;
+                case    13  :   index = 13  ;   break;
+                case    14  :   index = 7  ;   break;
+                case    15  :   index = 6  ;   break;
+                case    16  :   index = 5  ;   break;
+                case    17  :   index = 10   ;   break;
+                case    18  :   index = 16   ;   break;
+                case    19  :   index = 33  ;   break;
+                case    20  :   index = 34  ;   break;
+                case    21  :   index = 28  ;   break;
+                case    22  :   index = 35  ;   break;
+                case    23  :   index = 22  ;   break;
+                case    24  :   index = 36  ;   break;
+                case    25  :   index = 32  ;   break;
+                case    26  :   index = 27  ;   break;
+                case    27  :   index = 21  ;   break;
+                case    28  :   index = 14  ;   break;
+                case    29  :   index = 8  ;   break;
+                case    30  :   index = 3  ;   break;
+                case    31  :   index = 2  ;   break;
+                case    32  :   index = 1  ;   break;
+                case    33  :   index = 0  ;   break;
+                case    34  :   index = 4  ;   break;
+                case    35  :   index = 9  ;   break;
+                case    36  :   index = 15  ;   break;
+                default: index = -1; break;
+            }
+            if (index == -1){
+                fills[i] = -1;
+            } else{
+                fills[i] = nums[index];
+            }
+        }
+        return fills;
+    }//fill3()
+
+}// HexagonNodeFactory

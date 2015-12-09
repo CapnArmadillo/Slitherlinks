@@ -4,7 +4,6 @@ import android.graphics.Color;
 import android.graphics.Path;
 
 import com.armadillo.common.DLog;
-import com.armadillo.slitherlink.altair.SlitherlinkHelper;
 
 import java.util.ArrayList;
 //import java.awt.Graphics;
