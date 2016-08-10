@@ -1,5 +1,6 @@
 package com.armadillo.slitherlink.hex;
 
+import com.armadillo.common.DLog;
 import com.armadillo.slitherlink.common.INodeFactory;
 import com.armadillo.slitherlink.common.Position;
 import com.armadillo.slitherlink.common.SNode;
@@ -36,77 +37,64 @@ public class HexagonNodeFactory implements INodeFactory
     public ArrayList<SNode> grow(SNode node, int input, boolean trigger)
     {
         SNode temp;
-        ArrayList<SNode> newList = new ArrayList<SNode>();
+        ArrayList<SNode> nodeList = new ArrayList<SNode>();
         int shape = 6;
-        int x;
-        int y;
-        int xSign = 1;
-        int ySign = 1;   // for changing the sign of x and y based on dir
+        int x = 0;
+        int y = -36;
 
-        int sides = 6;
         Position pos = node.getPosition();
         float scale = node.getScale();
 
-        for (int i = 1; i <= sides; i++)
-        {
-            switch (i % 3){
-                case 1:
-                    x = 0;
-                    y = 36;
-                    break;
-                default:
-                    x = 30;
-                    y = 18;
-                    break;
+        for (int i = 0; i <= input; i++) {
+            y += 36;
+            temp = new SNode(shape, input, pos, (int) (x * scale), (int) (y * scale), 0, scale);
+            if (!temp.equals(node)) {
+                makePoly(temp);
+//                temp.addEdges();
+//            temp.link();
+                temp.setIsGrown(true);
+                nodeList.add(temp);
             }
 
-            if (i < 4) {
-                xSign = 1;
-            } else {
-                xSign = -1;
-            }
-            if (i % 6 < 3) {
-                ySign = 1;
-            } else {
-                ySign = -1;
-            }
-//            switch (i){
-//                case 1:
-//                case 2:
-//                    ySign = 1;
-//                    break;
-//                case 3:
-//                    ySign = -1;
-//                    break;
-//                case 4:
-//                case 5:
-//                    ySign = -1;
-//                    break;
-//                case 6:
-//                    ySign = 1;
-//                    break;
-//            }
-
-            temp = new SNode(shape, input, pos, xSign * (int)(x * scale), ySign * (int)(y * scale), 0, scale);
+            nodeList.addAll(grow1(temp, input + i));
+        }
+        for (int j = input - 1; j >= 0; j--) {
+            x += 30;
+            y += 18;
+            temp = new SNode(shape, input, pos, (int) (x * scale), (int) (y * scale), 0, scale);
             makePoly(temp);
+//            temp.addEdges();
+//            temp.link();
+            temp.setIsGrown(true);
+            nodeList.add(temp);
 
-            if (node.hasNode(temp))  {
-                node.link();
-            } else if (node.adjHasNode(temp)) {
-                temp = node.getAdjNode(temp);
-                node.link(node, temp);
-//                    temp.setEdges();
-            } else if (trigger){
-                node.link(node, temp);
-                temp.setEdges();
-                temp.link();
-                newList.add(temp);
-            }
+            nodeList.addAll(grow1(temp, input + j));
         }
         node.setIsGrown(true);
-        node.setNodes(newList);
-        return newList;
+        return nodeList;
     } // grow()
+
+    public ArrayList<SNode> grow1(SNode node, int input)
+    {
+        int shape = 6;
+        int x = 30;
+        int y = -18;
+        Position pos = node.getPosition();
+        float scale = node.getScale();
+
+        ArrayList<SNode> nodeList = new ArrayList<SNode>();
+        SNode temp;
+        for (int i = 1; i <= input; i++) {
+            temp = new SNode(shape, input, pos, (int) (i * x * scale), (int) (i * y * scale), 0, scale);
+            makePoly(temp);
+//            temp.addEdges();
+//            temp.link();
+            temp.setIsGrown(true);
+            nodeList.add(temp);
+        }
+        return nodeList;
+
+    }
     /**
     * Used to calculate the corners of each node.  Don't let the grow method
     * steal my glory, I do all the work around here!  Most of that code 
@@ -128,7 +116,7 @@ public class HexagonNodeFactory implements INodeFactory
         points[0] = new Position(-20, 0, scale);
 
         node.makePath(points);
-        node.addEdges();
+//        node.addEdges();
     } // makePoly()
 
     @Override
@@ -139,29 +127,32 @@ public class HexagonNodeFactory implements INodeFactory
         } else {
             clues = nums;
         }
-        switch (depth) {
-            case 1: {
-                clues = fill1(clues);
-                break;
-            }
-            case 2: {
-                clues = fill2(clues);
-                break;
-            }
-            case 3: {
-                clues = fill3(clues);
-                break;
-            }
-//            case 6:
-//            case 7:
-//            case 8:
-//            {
-//                clues = fill7(nums);
+//        switch (depth) {
+//            case 1: {
+//                clues = fill1(clues);
 //                break;
 //            }
-            default: {
-                clues = fill(depth);
-            }
+//            case 2: {
+//                clues = fill2(clues);
+//                break;
+//            }
+//            case 3: {
+//                clues = fill3(clues);
+//                break;
+//            }
+////            case 6:
+////            case 7:
+////            case 8:
+////            {
+////                clues = fill7(nums);
+////                break;
+////            }
+//            default: {
+//                clues = fill(depth);
+//            }
+//        }
+        for (int i = 0; i < clues.length; i++) {
+            DLog.v(TAG, "clue[" + i + "] = " + clues[i]);
         }
         return clues;
     }

@@ -40,7 +40,7 @@ public class HexLayoutFragment extends Fragment {
     private TextView coordinates, nearest;
     private ToggleButton clickMode;
 
-    private RadioButton depth0, depth1, depth2, depth3, depth4, depth5, depth6;
+    private RadioButton depth0, depth1, depth2, depth3, depth4, depth5, depth6, depth7, depth8, depth9;
     private Spinner depth;
 
     private Slitherlink slitherlink;
@@ -87,6 +87,9 @@ public class HexLayoutFragment extends Fragment {
         depth4 = (RadioButton)view.findViewById(R.id.depth4);
         depth5 = (RadioButton)view.findViewById(R.id.depth5);
         depth6 = (RadioButton)view.findViewById(R.id.depth6);
+        depth7 = (RadioButton)view.findViewById(R.id.depth7);
+        depth8 = (RadioButton)view.findViewById(R.id.depth8);
+        depth9 = (RadioButton)view.findViewById(R.id.depth9);
 
         setListener(depth0);
         setListener(depth1);
@@ -95,6 +98,9 @@ public class HexLayoutFragment extends Fragment {
         setListener(depth4);
         setListener(depth5);
         setListener(depth6);
+        setListener(depth7);
+        setListener(depth8);
+        setListener(depth9);
 
         return view;
     }
@@ -210,7 +216,9 @@ public class HexLayoutFragment extends Fragment {
         }
         DLog.d(TAG, node.toString());
         paint.setColor(node.getColor());
-        canvas.drawPath(node.getPath(), paint);
+        if (node.getPath() != null) {
+            canvas.drawPath(node.getPath(), paint);
+        }
         if (node.getValue() != -1) {
             paint.setColor(node.getTextColor());
             paint.setTextSize(fontSize);
@@ -229,7 +237,16 @@ public class HexLayoutFragment extends Fragment {
                     String text = buttonView.getText().toString();
                     if (text != null) {
                         int depth = Integer.parseInt(text);
-                        slitherlink = new Slitherlink(Slitherlink.TYPE_HEXAGON, depth, 1.5f);
+                        float scale;
+                        if (depth > 5) {
+                            scale = 1.0f;
+                        } else if (depth > 2) {
+                            scale = 1.5f;
+                        } else {
+                            scale = 2.0f;
+                        }
+
+                        slitherlink = new Slitherlink(Slitherlink.TYPE_HEXAGON, depth, scale);
 
                         nodes = slitherlink.getNodes();
                         edges = slitherlink.getEdges();

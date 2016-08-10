@@ -108,8 +108,10 @@ public class Slitherlink
         this.type = type;
         setup(depth, null);
 
-        for (int i = 0; i < edges.size(); i++){
-            edges.get(i).setEdges();
+        if (type.equalsIgnoreCase(TYPE_ALTAIR)) {
+            for (int i = 0; i < edges.size(); i++) {
+                edges.get(i).setEdges();
+            }
         }
     }//Slitherlink(depth)
     /**
@@ -125,8 +127,10 @@ public class Slitherlink
         scale = scaleIn;
         setup(depth, null);
 
-        for (int i = 0; i < edges.size(); i++){
-            edges.get(i).setEdges();
+        if (type.equalsIgnoreCase(TYPE_ALTAIR)) {
+            for (int i = 0; i < edges.size(); i++) {
+                edges.get(i).setEdges();
+            }
         }
     }//Slitherlink(depth)
     /**
@@ -169,18 +173,21 @@ public class Slitherlink
     public void setup(int depth, int[] list) {
         DLog.d(TAG, "setup for type " + type);
         solved = false;
-        int factor = (depth + 2) * (int)(size * scale);
-        base = new Position(factor,factor);
         SNode root;
         if (type.equalsIgnoreCase(TYPE_ALTAIR)) {
             factory = new AltairNodeFactory();
+            int factor = (depth + 2) * (int)(size * scale);
+            base = new Position(factor,factor);
             root = new SNode(8, -1, base, scale);
         } else {
             factory = new HexagonNodeFactory();
+            int factor = (int)(size * scale);
+            base = new Position(factor, factor * (depth + 1) / 2);
             root = new SNode(6, -1, base, scale);
         }
 
         factory.makePoly(root);
+        root.addEdges();
 
         int[] clues = factory.fill(depth, list);
 

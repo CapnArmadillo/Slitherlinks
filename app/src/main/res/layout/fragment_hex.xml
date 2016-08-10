@@ -44,6 +44,15 @@
         android:layout_toLeftOf="@id/clickMode"
         />
 
+    <!--<Spinner-->
+        <!--android:id="@+id/depth"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@id/clickMode"-->
+        <!--android:layout_alignLeft="@id/clickMode"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--/>-->
+
     <RadioGroup
         android:id="@+id/radioGroup"
         android:layout_width="wrap_content"
@@ -100,6 +109,27 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="6"
+            />
+
+        <RadioButton
+            android:id="@+id/depth7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="7"
+            />
+
+        <RadioButton
+            android:id="@+id/depth8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="8"
+            />
+
+        <RadioButton
+            android:id="@+id/depth9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="9"
             />
 
     </RadioGroup>
